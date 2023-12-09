@@ -30,7 +30,7 @@ function App() {
       if (discordUserId) {
         try {
           // Call the API with the correct URL and parameters
-          const apiUrl = `http://localhost:8008/auth/discord/callback/${discordUserId}`;
+          const apiUrl = `http://localhost:8080/auth/discord/callback/${discordUserId}`;
           const response = await axios.get(apiUrl);
 
           console.log(response); // Check the response details

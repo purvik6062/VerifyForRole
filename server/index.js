@@ -233,7 +233,8 @@ app.get("/auth/discord/callback/:discordUserId", async (req, res) => {
         const channel = await guild.channels.fetch(channelId);
 
         // Send a success message to the channel
-        await channel.send(`${member.user.username} has successfully verified and claimed the vc-holder role.`);
+        await channel.send(`${member.user.username} has successfully verified and claimed the vc-holder finalist role.`);
+        console.log(`${member.user.username} has successfully verified and claimed the vc-holder finalist role.`);
 
         // Respond with a success message
         res.status(200).send(`Role assigned: ${newRole.name}`);
