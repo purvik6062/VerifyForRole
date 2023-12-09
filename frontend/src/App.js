@@ -7,10 +7,10 @@ import { Center, Card, Image, CardBody, Container } from "@chakra-ui/react";
 function App() {
   // if you're developing and just want to see the dapp without going through the Polygon ID flow,
   // temporarily set this to "true" to ignore the Polygon ID check and go straight to the dapp page
-  const [provedAccessBirthday, setProvedAccessBirthday] = useState(false);
+  const [provedAccessFinalist, setProvedAccessFinalist] = useState(false);
   return (
     <>
-      {provedAccessBirthday ? (
+      {provedAccessFinalist ? (
         // <VcGatedDapp />
         <div>Welcome</div>
       ) : (
@@ -23,12 +23,7 @@ function App() {
             >
               <CardBody style={{ paddingBottom: 0 }}>
                 <p>
-                  This is a fullstack template for creating a Polygon ID VC{" "}
-                  <a href="https://0xpolygonid.github.io/tutorials/#core-concepts-of-polygon-id-verifiable-credentials-identity-holder-issuer-and-verifier-triangle-of-trust">
-                    (Verifiable Credential)
-                  </a>{" "}
-                  gated dapp. Prove you were born before January 1, 2023 to use
-                  the dapp
+                  Prove your Identity.
                 </p>
 
                 <PolygonIDVerifier
@@ -42,7 +37,7 @@ function App() {
                   issuerOrHowToLink={
                     "https://oceans404.notion.site/How-to-get-a-Verifiable-Credential-f3d34e7c98ec4147b6b2fae79066c4f6?pvs=4"
                   }
-                  onVerificationResult={setProvedAccessBirthday}
+                  onVerificationResult={setProvedAccessFinalist}
                 />
                 <Image
                   src="https://bafybeibcgo5anycve5flw6pcz5esiqkvrzlmwdr37wcqu33u63olskqkze.ipfs.nftstorage.link/"
@@ -51,7 +46,7 @@ function App() {
                 />
               </CardBody>
               <a
-                href="https://twitter.com/0ceans404"
+                // href="https://twitter.com/0ceans404"
                 target="_blank"
                 rel="noreferrer"
               >
