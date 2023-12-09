@@ -46,12 +46,12 @@ const { finalist } = require("./vcHelpers/finalist");
 const humanReadableAuthReason = "Must be a finalist";
 
 const credentialSubject = {
-  // finalist: {
-  //   $eq: true,
-  // },
-  dateOfEvent: {
-    $eq: 20231209,
+  finalist: {
+    $eq: true,
   },
+  // dateOfEvent: {
+  //   $eq: 20231209,
+  // },
 };
 
 const proofRequest = finalist(credentialSubject);

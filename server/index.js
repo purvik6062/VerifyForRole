@@ -205,6 +205,52 @@ myClient.on('interactionCreate', async (interaction) => {
 });
 
 
+app.get("/auth/discord/callback/:discordUserId", async (req, res) => {
+  try {
+    const { discordUserId } = req.params;
+
+    console.log("discordUserId:", discordUserId);
+
+    const guildId = process.env.GUILD_ID;
+    const guild = await myClient.guilds.fetch(guildId);
+
+    console.log(guild)
+
+    // Fetch the member
+    const member = await guild.members.fetch(discordUserId);
+    console.log(member)
+
+    if (member) {
+      // Get the role IDs
+      const vcRoleId = process.env.VC_HOLDER_ROLE_ID;
+      const newRole = guild.roles.cache.get(vcRoleId);
+
+      if (newRole) {
+        // Assign the new role to the user
+        await member.roles.add(newRole);
+
+        const channelId = process.env.GET_A_ROLE_CHANNEL_ID;
+        const channel = await guild.channels.fetch(channelId);
+
+        // Send a success message to the channel
+        await channel.send(`${member.user.username} has successfully verified and claimed the vc-holder role.`);
+
+        // Respond with a success message
+        res.status(200).send(`Role assigned: ${newRole.name}`);
+      } else {
+        console.error('VC Holder role not found.');
+        res.status(500).send('Error assigning role: VC Holder role not found.');
+      }
+    } else {
+      console.error(`Member with ID ${discordUserId} not found.`);
+      res.status(404).send(`Error assigning role: Member not found.`);
+    }
+  } catch (error) {
+    console.error("Error assigning role:", error);
+    res.status(500).send("Error assigning role.");
+  }
+});
+
 
 // save auth qr requests
 const authRequests = new Map();
