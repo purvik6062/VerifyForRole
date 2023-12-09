@@ -11,7 +11,8 @@ function App() {
   return (
     <>
       {provedAccessBirthday ? (
-        <VcGatedDapp />
+        // <VcGatedDapp />
+        <div>Welcome</div>
       ) : (
         <Center className="vc-check-page">
           <Container>

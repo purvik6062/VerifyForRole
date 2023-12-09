@@ -4,6 +4,7 @@ const getRawBody = require("raw-body");
 const { Server } = require("socket.io");
 const cors = require("cors");
 const { humanReadableAuthReason, proofRequest } = require("./proofRequest");
+const path = require("path");
 
 require("dotenv").config();
 
@@ -16,14 +17,6 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
-  res.send(
-    `Welcome to your backend Polygon ID verifier server! There are ${
-      Object.keys(apiPath).length
-    } routes available: ${Object.values(apiPath).join(" and ")}.`
-  );
-});
-
 const server = app.listen(port, () => {
   console.log(`server running on port ${port}`);
 });
@@ -33,6 +26,14 @@ const io = new Server(server, {
     origin: process.env.FRONTEND_URL,
   },
 });
+
+app.get("/", (req, res) => {
+  res.send(
+    `Welcome to your backend Polygon ID verifier server! There are ${Object.keys(apiPath).length
+    } routes available: ${Object.values(apiPath).join(" and ")}.`
+  );
+});
+
 
 // save auth qr requests
 const authRequests = new Map();
@@ -98,7 +99,9 @@ async function getAuthQr(req, res) {
 
 // handleVerification verifies the proof after get-auth-qr callbacks
 async function handleVerification(req, res) {
+  console.log("authRequests in handleVerification", authRequests);
   const sessionId = req.query.sessionId;
+  console.log("sessionId in handleVerification", sessionId);
 
   // get this session's auth request for verification
   const authRequest = authRequests.get(sessionId);
@@ -129,11 +132,18 @@ async function handleVerification(req, res) {
     ["polygon:mumbai"]: ethStateResolver,
   };
 
-  // Locate the directory that contains circuit's verification keys
-  const verificationKeyloader = new loaders.FSKeyLoader(keyDIR);
-  const sLoader = new loaders.UniversalSchemaLoader("ipfs.io");
-  const verifier = new auth.Verifier(verificationKeyloader, sLoader, resolvers);
+  // // console.log(path.join(__dirname, keyDIR))
 
+  // Locate the directory that contains circuit's verification keys
+  const verifier = await auth.Verifier.newVerifier(
+    {
+      stateResolver: resolvers,
+      circuitsDir: path.join(__dirname, keyDIR),
+      ipfsGatewayURL: "https://ipfs.io"
+    }
+  );
+
+  // console.log(verifier)
   try {
     const opts = {
       AcceptedStateTransitionDelay: 5 * 60 * 1000, // up to a 5 minute delay accepted by the Verifier
