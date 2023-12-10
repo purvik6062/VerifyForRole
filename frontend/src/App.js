@@ -94,9 +94,9 @@ function App() {
                   localServerURL={
                     process.env.REACT_APP_VERIFICATION_SERVER_LOCAL_HOST_URL
                   }
-                  credentialType={"KYCAgeCredential"}
+                  credentialType={"EVENT"}
                   issuerOrHowToLink={
-                    "https://oceans404.notion.site/How-to-get-a-Verifiable-Credential-f3d34e7c98ec4147b6b2fae79066c4f6?pvs=4"
+                    "https://devs.polygonid.com/"
                   }
                   onVerificationResult={setProvedAccessFinalist}
                 />
